@@ -1,0 +1,142 @@
+{
+  "name": "LinkedIn_Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "n8n",
+        "formDescription": "n8n LinkedIn Post",
+        "formFields": {
+          "values": [
+            {
+              "fieldName": "Title ",
+              "fieldLabel": "MIZANUR RAHMAN",
+              "placeholder": "Enter Title ",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.4,
+      "position": [
+        -320,
+        -16
+      ],
+      "id": "6acb4ec5-b6c9-4c7a-a98c-db9709b5185b",
+      "name": "On form submission",
+      "webhookId": "3be4b35c-1c0e-4744-a057-8a8347239a6a"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a professional content writer who specializes in crafting creative, \nengaging LinkedIn posts. Based on the title provided by the user, \nwrite a compelling, thoughtful, and platform-appropriate \nLinkedIn post that includes a hook, insight or story, and a \nlight call-to-action. Keep the tone professional yet friendly, \nand ensure it fits well with the expectations of LinkedIn audiences.\n\nUser’s Title: {{ $json['Title '] }}\n\nNow write the post.",
+        "options": {
+          "systemMessage": "=You are an expert LinkedIn content writer. \nYour job is to turn any given title into a compelling, professional, \nand creative LinkedIn post that resonates with working professionals, \nfounders, marketers, or creators.\n\nYour writing should:\n\n    Begin with an engaging hook (question, bold statement, or insight)\n\n    Provide a short story, lesson, or idea related to the title\n\n    End with a soft call-to-action or reflective closing line\n\n    Use clear, concise language suited for LinkedIn\n\n    Be formatted with line breaks for readability\n\nAvoid hashtags unless relevant. Emojis can be used lightly for expression (optional).\n\nAudience: Professionals who browse LinkedIn for learning, inspiration, and \nideas.Write post in bengali language that is human like approach "
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -112,
+        -16
+      ],
+      "id": "0bafe43a-c77f-4f3e-acb1-4f7c9aba30dd",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "person": "kqwNBVaCL-",
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.linkedIn",
+      "typeVersion": 1,
+      "position": [
+        176,
+        -16
+      ],
+      "id": "e6e215c0-d58a-4234-bfc0-42441f898d74",
+      "name": "Create a post",
+      "credentials": {
+        "linkedInOAuth2Api": {
+          "id": "Ehmanfi5RQhbT9gA",
+          "name": "LinkedIn account 44"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -256,
+        192
+      ],
+      "id": "ea3fe064-5459-4c31-909f-888ba1d28cbe",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "iANBov6Jmz4lseKh",
+          "name": "Open_Paid"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Create a post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "a270bd84-be92-4998-bba3-1cb514cfb934",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5f00bba974abf03cb5183d4d65f8a9645a781b04770df6a7d08284fca87d50b3"
+  },
+  "id": "niUiQAybcqEB00Rr",
+  "tags": []
+}
